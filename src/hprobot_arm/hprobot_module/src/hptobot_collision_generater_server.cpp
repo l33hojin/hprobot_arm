@@ -37,6 +37,8 @@ class collision_generator
     collision_object.operation = collision_object.ADD;
     collision_object.header.frame_id = move_group->getPlanningFrame();
     collision_object.id = "collision_obj";    
+    std::cout << "test" << std::endl;
+    
 
     
   }
