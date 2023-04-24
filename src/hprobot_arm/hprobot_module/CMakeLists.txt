@@ -52,7 +52,7 @@ include_directories(
 )
 
 add_executable(hprobot_marker_detector_server src/hprobot_marker_detector_server.cpp)
-
+add_dependencies(hprobot_marker_detector_server hprobot_module_gencpp)
 target_link_libraries(hprobot_marker_detector_server 
   ${catkin_LIBRARIES}
   ${OpenCV_LIBRARIES}
@@ -60,6 +60,7 @@ target_link_libraries(hprobot_marker_detector_server
 
 
 add_executable(hptobot_collision_generater_server src/hptobot_collision_generater_server.cpp)
+add_dependencies(hptobot_collision_generater_server hprobot_module_gencpp)
 target_link_libraries(hptobot_collision_generater_server 
   ${catkin_LIBRARIES}
   ${OpenCV_LIBRARIES}
