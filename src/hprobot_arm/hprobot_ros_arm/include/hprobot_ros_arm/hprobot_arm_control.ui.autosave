@@ -1,0 +1,401 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>HProbotArmControl</class>
+ <widget class="QWidget" name="HProbotArmControl">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>800</width>
+    <height>480</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Form</string>
+  </property>
+  <widget class="QStackedWidget" name="stackedWidget">
+   <property name="geometry">
+    <rect>
+     <x>10</x>
+     <y>10</y>
+     <width>781</width>
+     <height>461</height>
+    </rect>
+   </property>
+   <property name="currentIndex">
+    <number>1</number>
+   </property>
+   <widget class="QWidget" name="page0_main">
+    <widget class="QPushButton" name="pushButton_page0_main_execute">
+     <property name="geometry">
+      <rect>
+       <x>410</x>
+       <y>10</y>
+       <width>361</width>
+       <height>201</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Execute</string>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="pushButton_page0_main_handeyecalibration">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>10</y>
+       <width>361</width>
+       <height>201</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Hand-Eye Calibration</string>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="pushButton_page0_main_moving">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>250</y>
+       <width>361</width>
+       <height>201</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Moving</string>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="pushButton_page0_main_status">
+     <property name="geometry">
+      <rect>
+       <x>410</x>
+       <y>250</y>
+       <width>361</width>
+       <height>201</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Status</string>
+     </property>
+    </widget>
+   </widget>
+   <widget class="QWidget" name="page1_calibration">
+    <widget class="QPushButton" name="pushButton_page1_calibration_home">
+     <property name="geometry">
+      <rect>
+       <x>690</x>
+       <y>430</y>
+       <width>80</width>
+       <height>26</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>HOME</string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="label_page1_color_image">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>10</y>
+       <width>640</width>
+       <height>320</height>
+      </rect>
+     </property>
+     <property name="autoFillBackground">
+      <bool>false</bool>
+     </property>
+     <property name="frameShape">
+      <enum>QFrame::Box</enum>
+     </property>
+     <property name="lineWidth">
+      <number>1</number>
+     </property>
+     <property name="text">
+      <string/>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="pushButton_page1_show_image">
+     <property name="geometry">
+      <rect>
+       <x>670</x>
+       <y>10</y>
+       <width>101</width>
+       <height>25</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>show image</string>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="pushButton_page1_detect_board">
+     <property name="geometry">
+      <rect>
+       <x>670</x>
+       <y>40</y>
+       <width>101</width>
+       <height>25</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Detect Board</string>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="pushButton_page1_calculate_c2g">
+     <property name="geometry">
+      <rect>
+       <x>670</x>
+       <y>100</y>
+       <width>101</width>
+       <height>25</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Calculate c2g</string>
+     </property>
+    </widget>
+    <widget class="QListWidget" name="listWidget_page1_match">
+     <property name="geometry">
+      <rect>
+       <x>410</x>
+       <y>340</y>
+       <width>241</width>
+       <height>111</height>
+      </rect>
+     </property>
+    </widget>
+    <widget class="QTextEdit" name="textEdit_page1_calibration_log">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>340</y>
+       <width>391</width>
+       <height>111</height>
+      </rect>
+     </property>
+     <property name="acceptDrops">
+      <bool>false</bool>
+     </property>
+     <property name="tabChangesFocus">
+      <bool>true</bool>
+     </property>
+     <property name="readOnly">
+      <bool>true</bool>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="pushButton_page1_get_match">
+     <property name="geometry">
+      <rect>
+       <x>670</x>
+       <y>70</y>
+       <width>101</width>
+       <height>25</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Get Match</string>
+     </property>
+    </widget>
+   </widget>
+   <widget class="QWidget" name="page2_execute">
+    <widget class="QPushButton" name="pushButton_page2_execute_detectmarker">
+     <property name="geometry">
+      <rect>
+       <x>370</x>
+       <y>230</y>
+       <width>181</width>
+       <height>26</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Detect Marker</string>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="pushButton_3">
+     <property name="geometry">
+      <rect>
+       <x>370</x>
+       <y>310</y>
+       <width>80</width>
+       <height>26</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>PushButton</string>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="pushButton_page2_execute_generatecollisionobject">
+     <property name="geometry">
+      <rect>
+       <x>370</x>
+       <y>270</y>
+       <width>181</width>
+       <height>26</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Generate Collision Object</string>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="pushButton_page2_execute_home">
+     <property name="geometry">
+      <rect>
+       <x>690</x>
+       <y>430</y>
+       <width>80</width>
+       <height>26</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>HOME</string>
+     </property>
+    </widget>
+    <widget class="QTextEdit" name="textEdit_page2_execute_log">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>10</y>
+       <width>351</width>
+       <height>441</height>
+      </rect>
+     </property>
+    </widget>
+    <widget class="QLabel" name="label_page2_detect_marker">
+     <property name="geometry">
+      <rect>
+       <x>370</x>
+       <y>10</y>
+       <width>391</width>
+       <height>211</height>
+      </rect>
+     </property>
+     <property name="autoFillBackground">
+      <bool>false</bool>
+     </property>
+     <property name="frameShape">
+      <enum>QFrame::Box</enum>
+     </property>
+     <property name="lineWidth">
+      <number>1</number>
+     </property>
+     <property name="text">
+      <string/>
+     </property>
+    </widget>
+   </widget>
+   <widget class="QWidget" name="page3_moving">
+    <widget class="QLineEdit" name="lineEdit_page3_coordinate_x">
+     <property name="geometry">
+      <rect>
+       <x>420</x>
+       <y>110</y>
+       <width>113</width>
+       <height>25</height>
+      </rect>
+     </property>
+    </widget>
+    <widget class="QLineEdit" name="lineEdit_page3_coordinate_y">
+     <property name="geometry">
+      <rect>
+       <x>560</x>
+       <y>100</y>
+       <width>113</width>
+       <height>25</height>
+      </rect>
+     </property>
+    </widget>
+    <widget class="QLineEdit" name="lineEdit_page3_coordinate_z">
+     <property name="geometry">
+      <rect>
+       <x>610</x>
+       <y>160</y>
+       <width>113</width>
+       <height>25</height>
+      </rect>
+     </property>
+    </widget>
+    <widget class="QLabel" name="label_page3_coordinate_x">
+     <property name="geometry">
+      <rect>
+       <x>470</x>
+       <y>80</y>
+       <width>21</width>
+       <height>17</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>X</string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="label_page3_coordinate_y">
+     <property name="geometry">
+      <rect>
+       <x>580</x>
+       <y>70</y>
+       <width>21</width>
+       <height>17</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Y</string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="label_page3_coordinate_z">
+     <property name="geometry">
+      <rect>
+       <x>660</x>
+       <y>140</y>
+       <width>21</width>
+       <height>17</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Z</string>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="pushButton_page3_execute">
+     <property name="geometry">
+      <rect>
+       <x>620</x>
+       <y>300</y>
+       <width>89</width>
+       <height>25</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>execute</string>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="pushButton_page3_home">
+     <property name="geometry">
+      <rect>
+       <x>510</x>
+       <y>330</y>
+       <width>80</width>
+       <height>26</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>HOME</string>
+     </property>
+    </widget>
+    <widget class="QTextEdit" name="textEdit_page3_moving_log">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>10</y>
+       <width>371</width>
+       <height>441</height>
+      </rect>
+     </property>
+     <property name="readOnly">
+      <bool>true</bool>
+     </property>
+    </widget>
+   </widget>
+   <widget class="QWidget" name="page4_status"/>
+  </widget>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>

@@ -10,8 +10,8 @@ HProbotArmControl::HProbotArmControl(QWidget *parent) :
   n.reset(new ros::NodeHandle("~"));
 
   ui->stackedWidget->setCurrentIndex(0);
-
   ros_timer = new QTimer(this);
+
   connect(ros_timer, SIGNAL(timeout()), this, SLOT(spinOnce()));
   ros_timer->start(1);  // set the rate to 100ms  You can change this if you want to increase/decrease update rate
   ros::AsyncSpinner spinner(4);
@@ -220,6 +220,10 @@ void HProbotArmControl::on_pushButton_page2_execute_generatecollisionobject_clic
   collision_object.primitives.push_back(primitive);
   collision_object.primitive_poses.push_back(box_pose);
   collision_objects.push_back(collision_object);
+
+  std::cout << ros::package::getPath("hprobot_ros_arm")<< std::endl;
+  std::string path_stl_dir;
+  path_stl_dir = "file://";
 
   //====================하판====================//
   m = shapes::createMeshFromResource("file:///home/hprobot/simul_stl/1138.600.10.stl",b);

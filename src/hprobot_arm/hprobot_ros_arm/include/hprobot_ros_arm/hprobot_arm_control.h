@@ -6,7 +6,7 @@
 #include <librealsense2/rs.hpp>
 
 #include <iostream>
-
+#include <QCoreApplication>
 // Hprobot module
 #include <hprobot_module/hprobot_marker_detector.h>
 #include <hprobot_module/hprobot_collision_generator.h>
