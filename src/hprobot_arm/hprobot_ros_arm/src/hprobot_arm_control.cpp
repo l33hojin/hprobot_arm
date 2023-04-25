@@ -207,6 +207,7 @@ void HProbotArmControl::on_pushButton_page2_execute_generatecollisionobject_clic
   geometry_msgs::Pose mesh_pose;
 
   tf2::Quaternion calQuaternion;
+  std::string path_stl_dir;
   //===================robot 밑면========================//
   primitive.type = primitive.CYLINDER;
   primitive.dimensions.resize(2);
@@ -221,12 +222,16 @@ void HProbotArmControl::on_pushButton_page2_execute_generatecollisionobject_clic
   collision_object.primitive_poses.push_back(box_pose);
   collision_objects.push_back(collision_object);
 
-  std::cout << ros::package::getPath("hprobot_ros_arm")<< std::endl;
-  std::string path_stl_dir;
-  path_stl_dir = "file://";
+
+
+  //file:///home/hprobot/interbotix_ws/src/hprobot_arm/hprobot_ros_arm
 
   //====================하판====================//
-  m = shapes::createMeshFromResource("file:///home/hprobot/simul_stl/1138.600.10.stl",b);
+  path_stl_dir = "file://";
+  path_stl_dir += ros::package::getPath("hprobot_ros_arm");
+  path_stl_dir += "/collision_object_meshs/1138.600.10.stl";
+  std::cout << path_stl_dir << std::endl;
+  m = shapes::createMeshFromResource(path_stl_dir,b);
   shapes::constructMsgFromShape(m, mesh_msg);
   mesh = boost::get<shape_msgs::Mesh>(mesh_msg);
   mesh_pose.position.x = 0.27;
@@ -246,7 +251,11 @@ void HProbotArmControl::on_pushButton_page2_execute_generatecollisionobject_clic
   collision_objects.push_back(collision_object);
 
   //====================상판====================//
-  m = shapes::createMeshFromResource("file:///home/hprobot/simul_stl/1138.600.10.stl",b);
+  path_stl_dir = "file://";
+  path_stl_dir += ros::package::getPath("hprobot_ros_arm");
+  path_stl_dir += "/collision_object_meshs/1138.600.10.stl";
+  std::cout << path_stl_dir << std::endl;
+  m = shapes::createMeshFromResource(path_stl_dir,b);
   shapes::constructMsgFromShape(m, mesh_msg);
   mesh = boost::get<shape_msgs::Mesh>(mesh_msg);
   mesh_pose.position.x = 0.27;
@@ -266,7 +275,10 @@ void HProbotArmControl::on_pushButton_page2_execute_generatecollisionobject_clic
   collision_objects.push_back(collision_object);
 
   //====================하판프레임====================//
-  m = shapes::createMeshFromResource("file:///home/hprobot/simul_stl/30.30.1138.stl",b);
+  path_stl_dir = "file://";
+  path_stl_dir += ros::package::getPath("hprobot_ros_arm");
+  path_stl_dir += "/collision_object_meshs/30.30.1138.stl";
+  m = shapes::createMeshFromResource(path_stl_dir,b);
   shapes::constructMsgFromShape(m, mesh_msg);
   mesh = boost::get<shape_msgs::Mesh>(mesh_msg);
   mesh_pose.position.x = 0.240;
@@ -281,7 +293,10 @@ void HProbotArmControl::on_pushButton_page2_execute_generatecollisionobject_clic
   collision_object.mesh_poses.push_back(mesh_pose);
   collision_objects.push_back(collision_object);
   //====================기둥 1====================//
-  m = shapes::createMeshFromResource("file:///home/hprobot/simul_stl/30.30.370.stl",b);
+  path_stl_dir = "file://";
+  path_stl_dir += ros::package::getPath("hprobot_ros_arm");
+  path_stl_dir += "/collision_object_meshs/30.30.370.stl";
+  m = shapes::createMeshFromResource(path_stl_dir,b);
   shapes::constructMsgFromShape(m, mesh_msg);
   mesh = boost::get<shape_msgs::Mesh>(mesh_msg);
   mesh_pose.position.x = 0.240;
@@ -296,7 +311,10 @@ void HProbotArmControl::on_pushButton_page2_execute_generatecollisionobject_clic
   collision_object.mesh_poses.push_back(mesh_pose);
   collision_objects.push_back(collision_object);
   //====================기둥 2====================//
-  m = shapes::createMeshFromResource("file:///home/hprobot/simul_stl/30.30.370.stl",b);
+  path_stl_dir = "file://";
+  path_stl_dir += ros::package::getPath("hprobot_ros_arm");
+  path_stl_dir += "/collision_object_meshs/30.30.370.stl";
+  m = shapes::createMeshFromResource(path_stl_dir,b);
   shapes::constructMsgFromShape(m, mesh_msg);
   mesh = boost::get<shape_msgs::Mesh>(mesh_msg);
   mesh_pose.position.x = 0.240;
@@ -311,7 +329,10 @@ void HProbotArmControl::on_pushButton_page2_execute_generatecollisionobject_clic
   collision_object.mesh_poses.push_back(mesh_pose);
   collision_objects.push_back(collision_object);
   //====================기둥 3====================//
-  m = shapes::createMeshFromResource("file:///home/hprobot/simul_stl/30.30.370.stl",b);
+  path_stl_dir = "file://";
+  path_stl_dir += ros::package::getPath("hprobot_ros_arm");
+  path_stl_dir += "/collision_object_meshs/30.30.370.stl";
+  m = shapes::createMeshFromResource(path_stl_dir,b);
   shapes::constructMsgFromShape(m, mesh_msg);
   mesh = boost::get<shape_msgs::Mesh>(mesh_msg);
   mesh_pose.position.x = 0.870;
@@ -326,7 +347,10 @@ void HProbotArmControl::on_pushButton_page2_execute_generatecollisionobject_clic
   collision_object.mesh_poses.push_back(mesh_pose);
   collision_objects.push_back(collision_object);
   //====================기둥 4====================//
-  m = shapes::createMeshFromResource("file:///home/hprobot/simul_stl/30.30.370.stl",b);
+  path_stl_dir = "file://";
+  path_stl_dir += ros::package::getPath("hprobot_ros_arm");
+  path_stl_dir += "/collision_object_meshs/30.30.370.stl";
+  m = shapes::createMeshFromResource(path_stl_dir,b);
   shapes::constructMsgFromShape(m, mesh_msg);
   mesh = boost::get<shape_msgs::Mesh>(mesh_msg);
   mesh_pose.position.x = 0.870;
@@ -342,16 +366,19 @@ void HProbotArmControl::on_pushButton_page2_execute_generatecollisionobject_clic
   collision_objects.push_back(collision_object);
 
   //====================상판프레임====================//
-  m = shapes::createMeshFromResource("file:///home/hprobot/simul_stl/30.30.1138.stl",b);
+  path_stl_dir = "file://";
+  path_stl_dir += ros::package::getPath("hprobot_ros_arm");
+  path_stl_dir += "/collision_object_meshs/30.30.1138.stl";
+  m = shapes::createMeshFromResource(path_stl_dir,b);
   shapes::constructMsgFromShape(m, mesh_msg);
   mesh = boost::get<shape_msgs::Mesh>(mesh_msg);
   mesh_pose.position.x = 0.240;
   mesh_pose.position.y = -0.569;
   mesh_pose.position.z = 0.58;
   mesh_pose.orientation.w= calQuaternion.getW();
-  mesh_pose.orientation.x= calQuaternion.getX();;
-  mesh_pose.orientation.y= calQuaternion.getY();;
-  mesh_pose.orientation.z= calQuaternion.getZ();;
+  mesh_pose.orientation.x= calQuaternion.getX();
+  mesh_pose.orientation.y= calQuaternion.getY();
+  mesh_pose.orientation.z= calQuaternion.getZ();
 
   collision_object.meshes.push_back(mesh);
   collision_object.mesh_poses.push_back(mesh_pose);
