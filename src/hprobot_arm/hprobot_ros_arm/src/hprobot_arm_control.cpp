@@ -141,8 +141,8 @@ void HProbotArmControl::on_pushButton_page2_execute_generatecollisionobject_clic
 {
   QString text_log;
   text_log.sprintf("[INFO] [%lf] Service Call 'collision generator' ",ros::Time::now().toSec());
-  ui->textEdit_page2_execute_log->append(text_log);
-
+  //ui->textEdit_page2_execute_log->append(text_log);
+  ui->textEdit_page2_execute_log->setText(text_log);
   float position[3];
   float orientation[4];
 

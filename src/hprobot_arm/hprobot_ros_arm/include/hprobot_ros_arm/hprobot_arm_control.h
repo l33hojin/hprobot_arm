@@ -20,7 +20,8 @@
 #include <QLabel>
 #include <QMessageBox>
 #include <QTextEdit>
-
+#include <QThreadPool>
+#include <QThread>
 // ROS
 #include <ros/ros.h>
 #include <ros/package.h>
