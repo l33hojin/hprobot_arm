@@ -16,6 +16,7 @@ set(ROS_DEPENDS
   geometry_msgs
   trajectory_msgs
   interbotix_xs_msgs
+  interbotix_xs_sdk
   message_generation
   message_runtime
   moveit_commander

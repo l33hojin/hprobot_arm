@@ -7,8 +7,7 @@ HProbotArmControl::HProbotArmControl(QWidget *parent) :
   ui(new Ui::HProbotArmControl)
 {
   ui->setupUi(this);
-  n.reset(new ros::NodeHandle("~"));
-
+  n.reset(new ros::NodeHandle("~"));  
   ui->stackedWidget->setCurrentIndex(0);
   ros_timer = new QTimer(this);
 
@@ -29,6 +28,32 @@ HProbotArmControl::HProbotArmControl(QWidget *parent) :
 
   // We can also print the name of the end-effector link for this group.
   ROS_INFO_NAMED("moveit_interface", "End effector link: %s", move_group->getEndEffectorLink().c_str());
+
+
+  robot_info_call.request.cmd_type = "group";
+  robot_info_call.request.name = "all";
+  srv_robot_info = n->serviceClient<interbotix_xs_msgs::RobotInfo>("/vx300/get_robot_info");
+  srv_operating_modes = n->serviceClient<interbotix_xs_msgs::OperatingModes>("/vx300/set_operating_modes");
+  pub_joint_group_cmd = n->advertise<interbotix_xs_msgs::JointGroupCommand>("/vx300/commands/joint_group", 1);
+  if(srv_robot_info.call(robot_info_call)){
+      homesleep_homevec.resize(robot_info_call.response.num_joints);
+      std::fill(homesleep_homevec.begin(), homesleep_homevec.end(), 0.0f);
+      homesleep_sleepvec.resize(robot_info_call.response.num_joints);
+      homesleep_sleepvec = robot_info_call.response.joint_sleep_positions;
+      std::cout << "success!!" << std::endl;
+  }
+  else {
+      std::cout << "failed.." << std::endl;
+  }
+
+  opmodes_call.request.cmd_type = "group";
+  opmodes_call.request.name = "arm";
+  opmodes_call.request.mode = "position";
+  opmodes_call.request.profile_type = "velocity";
+  opmodes_call.request.profile_velocity = 50;
+  opmodes_call.request.profile_acceleration = 20;
+  srv_operating_modes.call(opmodes_call);
+
 
 
   /*visual_tools = new moveit_visual_tools::MoveItVisualTools(move_group->getPlanningFrame());
@@ -179,8 +204,13 @@ void HProbotArmControl::on_pushButton_page2_execute_generatecollisionobject_clic
   q.setZ(orientation[3]);
 
   tf::Matrix3x3 rt(q);
+ 
+  double roll, pitch, yaw;
+  rt.getRPY(roll, pitch, yaw);
 
-
+  std::cout << roll  << std::endl;
+  std::cout << pitch  << std::endl;
+  std::cout << yaw  << std::endl;
   cv::Matx44f gripper2base = {
     (float)rt[0][0], (float)rt[0][1], (float)rt[0][2], position[0],
     (float)rt[1][0], (float)rt[1][1], (float)rt[1][2], position[1],
@@ -394,7 +424,7 @@ void HProbotArmControl::on_pushButton_page2_execute_generatecollisionobject_clic
   /*ros::ServiceClient client = n->serviceClient<hprobot_module::hprobot_collision_generator>("/vx300/collision_generation");
   hprobot_module::hprobot_collision_generator srv;
   if(client.call(srv))
-  {
+  {￩￩￩
     ROS_INFO("SUCCESS");
   }
   else
@@ -446,7 +476,7 @@ void HProbotArmControl::on_pushButton_page1_detect_board_clicked()
 {
     int squaresX = 8;//인쇄한 보드의 가로방향 마커 갯수
     int squaresY = 5;//인쇄한 보드의 세로방향 마커 갯수
-    float squareLength = 30;//검은색 테두리 포함한 정사각형의 한변 길이, mm단위로 입력
+    float squareLength = 30;//검은색 테두리 포￣함한 정사각형의 한변 길이, mm단위로 입력
     float markerLength = 23;//인쇄물에서의 마커 한변의 길이, mm단위로 입력
     int dictionaryId = 11;//DICT_6X6_250=10
 
@@ -605,16 +635,43 @@ void HProbotArmControl::on_pushButton_page3_execute_clicked()
     ros::AsyncSpinner spinner(4);
     spinner.start();
     geometry_msgs::Pose coordinate;
-
-
     QString text_log;
     text_log.sprintf("[INFO] [%lf] Manipulator Moving...' ",ros::Time::now().toSec());
     ui->textEdit_page3_moving_log->append(text_log);
 
-    coordinate.position.x = ui->lineEdit_page3_coordinate_x->text().toDouble();
+
+    //coordinate.position.x = ui->lineEdit_page3_coordinate_x->text().toDouble();
+    //coordinate.position.y = ui->lineEdit_page3_coordinate_y->text().toDouble();
+    //coordinate.position.z = ui->lineEdit_page3_coordinate_z->text().toDouble();
+    std::vector<geometry_msgs::Pose> waypoints;
+
+
+    coordinate.position.x = 0.4;
+    coordinate.position.y = 0;
+    coordinate.position.z = 0.4;
+    waypoints.push_back(coordinate);
+
+    coordinate.position.x = 0.5;
+    coordinate.position.y = 0;
+    coordinate.position.z = 0.5;
+    waypoints.push_back(coordinate);
+
+    move_group->setStartState(*move_group->getCurrentState());
+
+
+    moveit_msgs::RobotTrajectory trajectory;
+    const double jump_threshold = 0.0;
+    const double eef_step = 0.01;
+    double fraction = move_group->computeCartesianPath(waypoints, eef_step, jump_threshold, trajectory);
+    ROS_INFO_NAMED("tutorial", "Visualizing plan 4 (Cartesian path) (%.2f%% achieved)", fraction * 100.0);
+
+    move_group->execute(trajectory);
+
+
+
+    /*coordinate.position.x = ui->lineEdit_page3_coordinate_x->text().toDouble();
     coordinate.position.y = ui->lineEdit_page3_coordinate_y->text().toDouble();
     coordinate.position.z = ui->lineEdit_page3_coordinate_z->text().toDouble();
-
 
     text_log.sprintf("[INFO] [%lf] Position = [%.2lf, %.2lf, %.2lf] ",ros::Time::now().toSec(),
                      coordinate.position.x, coordinate.position.y, coordinate.position.z);
@@ -629,15 +686,20 @@ void HProbotArmControl::on_pushButton_page3_execute_clicked()
                      coordinate.orientation.w, coordinate.orientation.x, coordinate.orientation.y, coordinate.orientation.z);
     ui->textEdit_page3_moving_log->append(text_log);
 
+
     move_group->setStartState(*move_group->getCurrentState());
     move_group->setPoseTarget(coordinate);
+    //move_group->setPoseTarget(move_group->getRandomPose());
     move_group->setGoalOrientationTolerance(0.1);
     bool success = (move_group->plan(saved_plan) == moveit::core::MoveItErrorCode::SUCCESS);
+
     if(success)
     {
         text_log.sprintf("[INFO] [%lf] Planning Success! Saved Plan Execute... ",ros::Time::now().toSec());
+        QCoreApplication::processEvents();
+
         ui->textEdit_page3_moving_log->append(text_log);
-        move_group->execute(saved_plan);
+        //move_group->execute(saved_plan);
     }
     else
     {
@@ -645,8 +707,26 @@ void HProbotArmControl::on_pushButton_page3_execute_clicked()
         ui->textEdit_page3_moving_log->append(text_log);
     }
 
-
+￩
     text_log.sprintf("[INFO] [%lf] Finish! ",ros::Time::now().toSec());
-    ui->textEdit_page3_moving_log->append(text_log);
+    ui->textEdit_page3_moving_log->append(text_log);*/
     spinner.stop();
+}
+
+void HProbotArmControl::on_pushButton_page3_sleep_clicked()
+{
+    joint_group_cmd.name = "all";
+    //joint_group_cmd.name = "group";
+    joint_group_cmd.cmd = homesleep_sleepvec;
+    pub_joint_group_cmd.publish(joint_group_cmd);
+}
+
+
+void HProbotArmControl::on_pushButton_page3_midhome_clicked()
+{
+    joint_group_cmd.name = "all";
+    //joint_group_cmd.name = "group";
+    joint_group_cmd.cmd = homesleep_homevec;
+    pub_joint_group_cmd.publish(joint_group_cmd);
+    //std::cout << "pub!" << std::endl;
 }

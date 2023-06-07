@@ -22,6 +22,7 @@
 #include <QTextEdit>
 #include <QThreadPool>
 #include <QThread>
+#include <QtConcurrent/QtConcurrent>
 // ROS
 #include <ros/ros.h>
 #include <ros/package.h>
@@ -37,7 +38,7 @@
 
 #include <geometric_shapes/solid_primitive_dims.h>
 
-
+#include <interbotix_xs_sdk/xs_sdk_obj.h>
 // MoveIt!
 #include <moveit/move_group_interface/move_group_interface.h>
 #include <moveit/planning_scene_interface/planning_scene_interface.h>
@@ -66,7 +67,8 @@
 
 #include <cv_bridge/cv_bridge.h>
 
-
+#include <interbotix_xs_msgs/JointGroupCommand.h>
+#include <interbotix_xs_msgs/RobotInfo.h>
 namespace Ui {
 class HProbotArmControl;
 }
@@ -91,6 +93,26 @@ public:
   ros::NodeHandlePtr n;
   rs2_intrinsics RS_camera_info_;
   cv::Mat marker2camera;
+
+  ros::ServiceClient srv_robot_info;
+  // The home/sleep publisher
+  ros::Publisher pub_joint_group_cmd;
+
+  // The home/sleep jointgroupcommand message
+  interbotix_xs_msgs::JointGroupCommand joint_group_cmd;
+
+  // The home/sleep vector storing the home positions
+  std::vector<float> homesleep_homevec;
+
+  // The home/sleep vector storing the sleep positions
+  std::vector<float> homesleep_sleepvec;
+  interbotix_xs_msgs::RobotInfo robot_info_call;
+
+
+  interbotix_xs_msgs::OperatingModes opmodes_call;
+  ros::ServiceClient srv_operating_modes;
+
+
 
 private slots:
   void spinOnce();
@@ -118,6 +140,10 @@ private slots:
   void on_pushButton_page3_home_clicked();
 
   void on_pushButton_page3_execute_clicked();
+
+  void on_pushButton_page3_sleep_clicked();
+
+  void on_pushButton_page3_midhome_clicked();
 
 private:
   Ui::HProbotArmControl *ui;

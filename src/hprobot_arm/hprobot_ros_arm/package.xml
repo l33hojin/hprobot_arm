@@ -21,6 +21,7 @@
   <depend>std_msgs</depend>
   <depend>trajectory_msgs</depend>
   <depend>interbotix_xs_msgs</depend>
+  <depend>interbotix_xs_sdk</depend>
   <depend>qtbase5-dev</depend>
   <depend>libboost-date-time-dev</depend>
   <depend>libboost-thread-dev</depend>
