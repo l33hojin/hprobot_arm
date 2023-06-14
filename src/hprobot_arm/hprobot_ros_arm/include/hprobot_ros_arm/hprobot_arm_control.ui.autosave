@@ -211,17 +211,17 @@
       <string>Detect Marker</string>
      </property>
     </widget>
-    <widget class="QPushButton" name="pushButton_3">
+    <widget class="QPushButton" name="pushButton_page2_execute_excute">
      <property name="geometry">
       <rect>
        <x>370</x>
        <y>310</y>
-       <width>80</width>
+       <width>181</width>
        <height>26</height>
       </rect>
      </property>
      <property name="text">
-      <string>PushButton</string>
+      <string>execute</string>
      </property>
     </widget>
     <widget class="QPushButton" name="pushButton_page2_execute_generatecollisionobject">
@@ -392,7 +392,7 @@
       <bool>true</bool>
      </property>
     </widget>
-    <widget class="QLabel" name="label_page3_coordinate_p">
+    <widget class="QLabel" name="label_page3_coordinate_y_2">
      <property name="geometry">
       <rect>
        <x>540</x>
@@ -405,7 +405,7 @@
       <string>P</string>
      </property>
     </widget>
-    <widget class="QLineEdit" name="lineEdit_page3_coordinate_p">
+    <widget class="QLineEdit" name="lineEdit_page3_coordinate_y_2">
      <property name="geometry">
       <rect>
        <x>510</x>
@@ -415,7 +415,7 @@
       </rect>
      </property>
     </widget>
-    <widget class="QLabel" name="label_page3_coordinate_ey">
+    <widget class="QLabel" name="label_page3_coordinate_z_2">
      <property name="geometry">
       <rect>
        <x>630</x>
@@ -428,7 +428,7 @@
       <string>Y</string>
      </property>
     </widget>
-    <widget class="QLabel" name="label_page3_coordinate_r">
+    <widget class="QLabel" name="label_page3_coordinate_x_2">
      <property name="geometry">
       <rect>
        <x>450</x>
@@ -441,7 +441,7 @@
       <string>R</string>
      </property>
     </widget>
-    <widget class="QLineEdit" name="lineEdit_page3_coordinate_ey">
+    <widget class="QLineEdit" name="lineEdit_page3_coordinate_z_2">
      <property name="geometry">
       <rect>
        <x>600</x>
@@ -451,7 +451,7 @@
       </rect>
      </property>
     </widget>
-    <widget class="QLineEdit" name="lineEdit_page3_coordinate_r">
+    <widget class="QLineEdit" name="lineEdit_page3_coordinate_x_2">
      <property name="geometry">
       <rect>
        <x>420</x>

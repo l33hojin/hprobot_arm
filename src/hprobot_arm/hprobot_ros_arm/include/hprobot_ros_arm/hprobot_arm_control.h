@@ -102,10 +102,10 @@ public:
   interbotix_xs_msgs::JointGroupCommand joint_group_cmd;
 
   // The home/sleep vector storing the home positions
-  std::vector<float> homesleep_homevec;
+  std::vector<float> home_position;
+  std::vector<float> mid_position;
+  std::vector<float> sleep_position;
 
-  // The home/sleep vector storing the sleep positions
-  std::vector<float> homesleep_sleepvec;
   interbotix_xs_msgs::RobotInfo robot_info_call;
 
 
@@ -144,6 +144,8 @@ private slots:
   void on_pushButton_page3_sleep_clicked();
 
   void on_pushButton_page3_midhome_clicked();
+
+  void on_pushButton_page2_execute_excute_clicked();
 
 private:
   Ui::HProbotArmControl *ui;

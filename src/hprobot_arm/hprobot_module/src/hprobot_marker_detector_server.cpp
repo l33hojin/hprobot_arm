@@ -74,6 +74,7 @@ class marker_detector
     }
     
     cv::Mat color_image = cv_ptr->image.clone();
+
     detectMarkers(color_image, dictionary, markerCorners, markerIds, parameters, rejectedCandidates);
 
     float markerLength = 0.05;
@@ -99,6 +100,9 @@ class marker_detector
           res.tvec.data.push_back(tvecs.at(i).val[j]);
         }
       }
+    }
+    else {
+        return false;
     }
     return true;
   }

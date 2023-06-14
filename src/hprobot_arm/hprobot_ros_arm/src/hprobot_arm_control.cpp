@@ -36,10 +36,14 @@ HProbotArmControl::HProbotArmControl(QWidget *parent) :
   srv_operating_modes = n->serviceClient<interbotix_xs_msgs::OperatingModes>("/vx300/set_operating_modes");
   pub_joint_group_cmd = n->advertise<interbotix_xs_msgs::JointGroupCommand>("/vx300/commands/joint_group", 1);
   if(srv_robot_info.call(robot_info_call)){
-      homesleep_homevec.resize(robot_info_call.response.num_joints);
-      std::fill(homesleep_homevec.begin(), homesleep_homevec.end(), 0.0f);
-      homesleep_sleepvec.resize(robot_info_call.response.num_joints);
-      homesleep_sleepvec = robot_info_call.response.joint_sleep_positions;
+      home_position.resize(robot_info_call.response.num_joints);
+      std::fill(home_position.begin(), home_position.end(), 0.0f);
+      sleep_position.resize(robot_info_call.response.num_joints);
+      sleep_position = robot_info_call.response.joint_sleep_positions;
+
+      mid_position.resize(robot_info_call.response.num_joints);
+      std::fill(mid_position.begin(), mid_position.end(), 0.0f);
+      mid_position.at(3) = 1.57;
       std::cout << "success!!" << std::endl;
   }
   else {
@@ -53,6 +57,8 @@ HProbotArmControl::HProbotArmControl(QWidget *parent) :
   opmodes_call.request.profile_velocity = 50;
   opmodes_call.request.profile_acceleration = 20;
   srv_operating_modes.call(opmodes_call);
+  
+  //move_group->
 
 
 
@@ -640,20 +646,22 @@ void HProbotArmControl::on_pushButton_page3_execute_clicked()
     ui->textEdit_page3_moving_log->append(text_log);
 
 
-    //coordinate.position.x = ui->lineEdit_page3_coordinate_x->text().toDouble();
-    //coordinate.position.y = ui->lineEdit_page3_coordinate_y->text().toDouble();
-    //coordinate.position.z = ui->lineEdit_page3_coordinate_z->text().toDouble();
+    coordinate.position.x = ui->lineEdit_page3_coordinate_x->text().toDouble();
+    coordinate.position.y = ui->lineEdit_page3_coordinate_y->text().toDouble();
+    coordinate.position.z = ui->lineEdit_page3_coordinate_z->text().toDouble();
+    tf2::Quaternion calQuaternion;
+
+    calQuaternion.setRPY(ui->lineEdit_page3_coordinate_x_2->text().toDouble(),
+                         ui->lineEdit_page3_coordinate_y_2->text().toDouble(),
+                         ui->lineEdit_page3_coordinate_z_2->text().toDouble());
+
+    calQuaternion=calQuaternion.normalize();
+    coordinate.orientation.w= calQuaternion.getW();
+    coordinate.orientation.x= calQuaternion.getX();;
+    coordinate.orientation.y= calQuaternion.getY();;
+    coordinate.orientation.z= calQuaternion.getZ();;
+
     std::vector<geometry_msgs::Pose> waypoints;
-
-
-    coordinate.position.x = 0.4;
-    coordinate.position.y = 0;
-    coordinate.position.z = 0.4;
-    waypoints.push_back(coordinate);
-
-    coordinate.position.x = 0.5;
-    coordinate.position.y = 0;
-    coordinate.position.z = 0.5;
     waypoints.push_back(coordinate);
 
     move_group->setStartState(*move_group->getCurrentState());
@@ -707,7 +715,7 @@ void HProbotArmControl::on_pushButton_page3_execute_clicked()
         ui->textEdit_page3_moving_log->append(text_log);
     }
 
-￩
+
     text_log.sprintf("[INFO] [%lf] Finish! ",ros::Time::now().toSec());
     ui->textEdit_page3_moving_log->append(text_log);*/
     spinner.stop();
@@ -716,8 +724,7 @@ void HProbotArmControl::on_pushButton_page3_execute_clicked()
 void HProbotArmControl::on_pushButton_page3_sleep_clicked()
 {
     joint_group_cmd.name = "all";
-    //joint_group_cmd.name = "group";
-    joint_group_cmd.cmd = homesleep_sleepvec;
+    joint_group_cmd.cmd = sleep_position;
     pub_joint_group_cmd.publish(joint_group_cmd);
 }
 
@@ -725,8 +732,101 @@ void HProbotArmControl::on_pushButton_page3_sleep_clicked()
 void HProbotArmControl::on_pushButton_page3_midhome_clicked()
 {
     joint_group_cmd.name = "all";
-    //joint_group_cmd.name = "group";
-    joint_group_cmd.cmd = homesleep_homevec;
+    joint_group_cmd.cmd = home_position;
+    pub_joint_group_cmd.publish(joint_group_cmd);   
+}
+
+
+void HProbotArmControl::on_pushButton_page2_execute_excute_clicked()
+{
+    ros::AsyncSpinner spinner(4);
+    spinner.start();
+
+    // move home position
+    joint_group_cmd.name = "all";
+    joint_group_cmd.cmd = mid_position;
     pub_joint_group_cmd.publish(joint_group_cmd);
-    //std::cout << "pub!" << std::endl;
+
+    sleep(3);
+
+    geometry_msgs::Pose coordinate;
+    std::vector<geometry_msgs::Pose> waypoints;
+
+    coordinate.position.x = 0.1;
+    coordinate.position.y = 0;
+    coordinate.position.z = 0.2;
+    waypoints.push_back(coordinate);
+
+    tf2::Quaternion calQuaternion;
+
+    calQuaternion.setRPY(0,1.57,0);
+    calQuaternion=calQuaternion.normalize();
+
+    coordinate.orientation.w= calQuaternion.getW();
+    coordinate.orientation.x= calQuaternion.getX();;
+    coordinate.orientation.y= calQuaternion.getY();;
+    coordinate.orientation.z= calQuaternion.getZ();;
+
+
+    move_group->setStartState(*move_group->getCurrentState());
+
+
+    moveit_msgs::RobotTrajectory trajectory;
+    const double jump_threshold = 0.0;
+    const double eef_step = 0.01;
+    double fraction = move_group->computeCartesianPath(waypoints, eef_step, jump_threshold, trajectory);
+    move_group->execute(trajectory);
+
+
+    // detecting marker
+
+    /*
+    QString text_log;
+    text_log.sprintf("[INFO] [%lf] Service Call 'marker_detection' ",ros::Time::now().toSec());
+    ui->textEdit_page2_execute_log->append(text_log);
+
+    ros::ServiceClient client = n->serviceClient<hprobot_module::hprobot_marker_detector>("/vx300/marker_detection");
+    hprobot_module::hprobot_marker_detector srv;
+    if(client.call(srv))
+    {
+      ui->textEdit_page2_execute_log->setTextColor(QColor(0,0,255));
+      text_log.sprintf("[INFO] [%lf] tvec : [%.2lf, %.2lf, %.2lf] ",ros::Time::now().toSec(),srv.response.tvec.data[0], srv.response.tvec.data[1], srv.response.tvec.data[2]);
+      ui->textEdit_page2_execute_log->append(text_log);
+
+      text_log.sprintf("[INFO] [%lf] rvec : [%.2lf, %.2lf, %.2lf] ",ros::Time::now().toSec(),srv.response.rvec.data[0], srv.response.rvec.data[1], srv.response.rvec.data[2]);
+      ui->textEdit_page2_execute_log->append(text_log);
+      ui->textEdit_page2_execute_log->setTextColor(QColor(0,0,0));
+
+      double rvec[3];
+      double tvec[3];
+
+      for(int i=0 ; i<3 ; i++){
+        rvec[i] = srv.response.rvec.data[i];
+        tvec[i] = srv.response.tvec.data[i];
+      }
+
+      cv::Mat marker_tvec(3,1, CV_64FC1, tvec);
+      cv::Mat marker_rvec_rod(3,1, CV_64FC1, rvec);
+      cv::Mat marker_rvec;
+      cv::Rodrigues(marker_rvec_rod, marker_rvec);
+
+      cv::Mat T = cv::Mat::eye(4, 4, marker_rvec.type()); // T is 4x4
+      T( cv::Range(0,3), cv::Range(0,3) ) = marker_rvec * 1; // copies R into T
+      T( cv::Range(0,3), cv::Range(3,4) ) = marker_tvec * 1;
+
+      marker2camera = T.clone();
+    }
+    else
+    {
+      ui->textEdit_page2_execute_log->setTextColor(QColor(255,0,0));
+      text_log.sprintf("[INFO] [%lf] Service Call Failed",ros::Time::now().toSec());
+      ui->textEdit_page2_execute_log->append(text_log);
+      ui->textEdit_page2_execute_log->setTextColor(QColor(0,0,0));
+    }
+
+
+*/
+
+ spinner.stop();
+
 }
