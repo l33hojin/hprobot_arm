@@ -72,7 +72,7 @@ HProbotArmControl::HProbotArmControl(QWidget *parent) :
  // manipulator_coordinate_pub_ = n->advertise<std_msgs::Float32>("/wlkata_coordinate",1000);
 
   //spinner.stop();
-  
+
  //ros::Subscriber color_image_sub_;
   //color_image_sub_ = new ros::Subscriber;
   //color_image_sub_ = n->subscribe("/camera/depth/camera_info", 1, &HProbotArmControl::color_image_sub_cb, this);
@@ -763,13 +763,14 @@ void HProbotArmControl::on_pushButton_page2_execute_excute_clicked()
     calQuaternion=calQuaternion.normalize();
 
     coordinate.orientation.w= calQuaternion.getW();
-    coordinate.orientation.x= calQuaternion.getX();;
-    coordinate.orientation.y= calQuaternion.getY();;
-    coordinate.orientation.z= calQuaternion.getZ();;
+    coordinate.orientation.x= calQuaternion.getX();
+    coordinate.orientation.y= calQuaternion.getY();
+    coordinate.orientation.z= calQuaternion.getZ();
 
 
     move_group->setStartState(*move_group->getCurrentState());
 
+    // detecting marker
 
     moveit_msgs::RobotTrajectory trajectory;
     const double jump_threshold = 0.0;
@@ -777,8 +778,30 @@ void HProbotArmControl::on_pushButton_page2_execute_excute_clicked()
     double fraction = move_group->computeCartesianPath(waypoints, eef_step, jump_threshold, trajectory);
     move_group->execute(trajectory);
 
+    ros::ServiceClient client = n->serviceClient<hprobot_module::hprobot_marker_detector>("/vx300/marker_detection");
+    hprobot_module::hprobot_marker_detector srv;
+    if(client.call(srv))
+    {
+      double rvec[3];
+      double tvec[3];
 
-    // detecting marker
+      for(int i=0 ; i<3 ; i++){
+        rvec[i] = srv.response.rvec.data[i];
+        tvec[i] = srv.response.tvec.data[i];
+      }
+
+      cv::Mat marker_tvec(3,1, CV_64FC1, tvec);
+      cv::Mat marker_rvec_rod(3,1, CV_64FC1, rvec);
+      cv::Mat marker_rvec;
+      cv::Rodrigues(marker_rvec_rod, marker_rvec);
+
+      cv::Mat T = cv::Mat::eye(4, 4, marker_rvec.type()); // T is 4x4
+      T( cv::Range(0,3), cv::Range(0,3) ) = marker_rvec * 1; // copies R into T
+      T( cv::Range(0,3), cv::Range(3,4) ) = marker_tvec * 1;
+
+      marker2camera = T.clone();
+    }
+
 
     /*
     QString text_log;
