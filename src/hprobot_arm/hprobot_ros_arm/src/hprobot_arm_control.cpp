@@ -772,7 +772,7 @@ void HProbotArmControl::on_pushButton_page2_execute_excute_clicked()
 
     // detecting marker
 
-    moveit_msgs::RobotTrajectory trajectory;
+    /*moveit_msgs::RobotTrajectory trajectory;
     const double jump_threshold = 0.0;
     const double eef_step = 0.01;
     double fraction = move_group->computeCartesianPath(waypoints, eef_step, jump_threshold, trajectory);
@@ -800,7 +800,7 @@ void HProbotArmControl::on_pushButton_page2_execute_excute_clicked()
       T( cv::Range(0,3), cv::Range(3,4) ) = marker_tvec * 1;
 
       marker2camera = T.clone();
-    }
+    }*/
 
 
     /*
