@@ -803,6 +803,37 @@ void HProbotArmControl::on_pushButton_page2_execute_excute_clicked()
     }*/
 
 
+    moveit_msgs::CollisionObject collision_object;
+    shape_msgs::SolidPrimitive primitive;
+    geometry_msgs::Pose box_pose;
+    std::vector<moveit_msgs::CollisionObject> collision_objects;
+
+    collision_object.operation = collision_object.ADD;
+    collision_object.header.frame_id = move_group->getPlanningFrame();
+    collision_object.id = "collision_obj";
+    Eigen::Vector3d b(0.001, 0.001, 0.001);
+    shapes::Mesh* m;
+    shape_msgs::Mesh mesh;
+    shapes::ShapeMsg mesh_msg;
+    geometry_msgs::Pose mesh_pose;
+
+
+    std::string path_stl_dir;
+    //===================robot 밑면========================//
+    primitive.type = primitive.CYLINDER;
+    primitive.dimensions.resize(2);
+    primitive.dimensions[0] = 0.05;
+    primitive.dimensions[1] = 0.4;
+    //primitive.dimensions[2] = 0.4;
+    box_pose.orientation.w = 1.0;
+    box_pose.position.x =  -0.2;
+    box_pose.position.y =  0.0;
+    box_pose.position.z =  -0.025;
+    collision_object.primitives.push_back(primitive);
+    collision_object.primitive_poses.push_back(box_pose);
+    collision_objects.push_back(collision_object);
+
+
     /*
     QString text_log;
     text_log.sprintf("[INFO] [%lf] Service Call 'marker_detection' ",ros::Time::now().toSec());
