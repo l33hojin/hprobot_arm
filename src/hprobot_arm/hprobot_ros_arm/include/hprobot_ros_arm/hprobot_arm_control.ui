@@ -23,7 +23,7 @@
     </rect>
    </property>
    <property name="currentIndex">
-    <number>2</number>
+    <number>4</number>
    </property>
    <widget class="QWidget" name="page0_main">
     <widget class="QPushButton" name="pushButton_page0_main_execute">
@@ -501,7 +501,263 @@
      </property>
     </widget>
    </widget>
-   <widget class="QWidget" name="page4_status"/>
+   <widget class="QWidget" name="page4_status">
+    <widget class="QTextEdit" name="textEdit_page4_status_log">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>10</y>
+       <width>401</width>
+       <height>441</height>
+      </rect>
+     </property>
+     <property name="readOnly">
+      <bool>true</bool>
+     </property>
+    </widget>
+    <widget class="QLabel" name="label_page4_waist_val">
+     <property name="geometry">
+      <rect>
+       <x>430</x>
+       <y>20</y>
+       <width>181</width>
+       <height>17</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>joint 1 / waist</string>
+     </property>
+    </widget>
+    <widget class="QLineEdit" name="lineEdit_page4_waist_val">
+     <property name="geometry">
+      <rect>
+       <x>430</x>
+       <y>40</y>
+       <width>181</width>
+       <height>25</height>
+      </rect>
+     </property>
+    </widget>
+    <widget class="QLabel" name="label_page4_waist_val_2">
+     <property name="geometry">
+      <rect>
+       <x>430</x>
+       <y>70</y>
+       <width>181</width>
+       <height>17</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>joint 2 / shoulder</string>
+     </property>
+    </widget>
+    <widget class="QLineEdit" name="lineEdit_page4_elbow_val">
+     <property name="geometry">
+      <rect>
+       <x>430</x>
+       <y>140</y>
+       <width>181</width>
+       <height>25</height>
+      </rect>
+     </property>
+    </widget>
+    <widget class="QLabel" name="label_page4_waist_val_3">
+     <property name="geometry">
+      <rect>
+       <x>430</x>
+       <y>120</y>
+       <width>181</width>
+       <height>17</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>joint 3 / elbow</string>
+     </property>
+    </widget>
+    <widget class="QLineEdit" name="lineEdit_page4_wrist_angle">
+     <property name="geometry">
+      <rect>
+       <x>430</x>
+       <y>190</y>
+       <width>181</width>
+       <height>25</height>
+      </rect>
+     </property>
+    </widget>
+    <widget class="QLabel" name="label_page4_waist_val_4">
+     <property name="geometry">
+      <rect>
+       <x>430</x>
+       <y>170</y>
+       <width>181</width>
+       <height>17</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>joint 4 / wrist_angle</string>
+     </property>
+    </widget>
+    <widget class="QLineEdit" name="lineEdit_page4_wrist_rotate">
+     <property name="geometry">
+      <rect>
+       <x>430</x>
+       <y>240</y>
+       <width>181</width>
+       <height>25</height>
+      </rect>
+     </property>
+    </widget>
+    <widget class="QLabel" name="label_page4_waist_val_5">
+     <property name="geometry">
+      <rect>
+       <x>430</x>
+       <y>220</y>
+       <width>181</width>
+       <height>17</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>joint 5 / wrist_rotate</string>
+     </property>
+    </widget>
+    <widget class="QLineEdit" name="lineEdit_page4_left_finger">
+     <property name="geometry">
+      <rect>
+       <x>430</x>
+       <y>290</y>
+       <width>181</width>
+       <height>25</height>
+      </rect>
+     </property>
+    </widget>
+    <widget class="QLabel" name="label_page4_waist_val_6">
+     <property name="geometry">
+      <rect>
+       <x>430</x>
+       <y>270</y>
+       <width>181</width>
+       <height>17</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>joint 6 / finger</string>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="pushButton_page4_moving">
+     <property name="geometry">
+      <rect>
+       <x>630</x>
+       <y>40</y>
+       <width>89</width>
+       <height>21</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>move</string>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="pushButton_page4_midhome">
+     <property name="geometry">
+      <rect>
+       <x>520</x>
+       <y>350</y>
+       <width>91</width>
+       <height>26</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>M.HOME</string>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="pushButton_page4_sleep">
+     <property name="geometry">
+      <rect>
+       <x>430</x>
+       <y>350</y>
+       <width>91</width>
+       <height>26</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>SLEEP</string>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="pushButton_page4_status_home">
+     <property name="geometry">
+      <rect>
+       <x>690</x>
+       <y>420</y>
+       <width>80</width>
+       <height>26</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>HOME</string>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="pushButton_page4_current_stat">
+     <property name="geometry">
+      <rect>
+       <x>430</x>
+       <y>320</y>
+       <width>91</width>
+       <height>26</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>current_stat</string>
+     </property>
+    </widget>
+    <widget class="QLineEdit" name="lineEdit_page4_shoulder_val">
+     <property name="geometry">
+      <rect>
+       <x>430</x>
+       <y>90</y>
+       <width>181</width>
+       <height>25</height>
+      </rect>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="pushButton_page4_g_open">
+     <property name="geometry">
+      <rect>
+       <x>430</x>
+       <y>380</y>
+       <width>91</width>
+       <height>26</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>G_OPEN</string>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="pushButton_page4_g_close">
+     <property name="geometry">
+      <rect>
+       <x>520</x>
+       <y>380</y>
+       <width>91</width>
+       <height>26</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>G_CLOSE</string>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="pushButton_page4_start">
+     <property name="geometry">
+      <rect>
+       <x>630</x>
+       <y>90</y>
+       <width>89</width>
+       <height>21</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>start</string>
+     </property>
+    </widget>
+   </widget>
   </widget>
  </widget>
  <resources/>

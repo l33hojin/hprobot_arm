@@ -29,6 +29,7 @@ HProbotArmControl::HProbotArmControl(QWidget *parent) :
   // We can also print the name of the end-effector link for this group.
   ROS_INFO_NAMED("moveit_interface", "End effector link: %s", move_group->getEndEffectorLink().c_str());
 
+  mqtt_pub = n->advertise<std_msgs::Int32>("/ping/primitive",1000);
 
   robot_info_call.request.cmd_type = "group";
   robot_info_call.request.name = "all";
@@ -119,6 +120,10 @@ void HProbotArmControl::on_pushButton_page0_main_execute_clicked()
   ui->stackedWidget->setCurrentIndex(2);
 }
 
+void HProbotArmControl::on_pushButton_page0_main_status_clicked()
+{
+  ui->stackedWidget->setCurrentIndex(4);
+}
 
 void HProbotArmControl::on_pushButton_page2_execute_detectmarker_clicked()
 {
@@ -882,5 +887,292 @@ void HProbotArmControl::on_pushButton_page2_execute_excute_clicked()
 */
 
  spinner.stop();
+
+}
+
+void HProbotArmControl::on_pushButton_page4_sleep_clicked()
+{
+    QString text_log;
+
+    joint_group_cmd.name = "all";
+    joint_group_cmd.cmd = sleep_position;
+    pub_joint_group_cmd.publish(joint_group_cmd);
+
+    sensor_msgs::JointStateConstPtr current_joint_state;
+    current_joint_state = ros::topic::waitForMessage<sensor_msgs::JointState>("/vx300/joint_states");
+
+    text_log.sprintf("[INFO] [%lf] waist        = [%lf] ",ros::Time::now().toSec(), current_joint_state->position.at(0));
+    ui->textEdit_page4_status_log->append(text_log);
+    text_log.sprintf("[INFO] [%lf] shoulder     = [%lf] ",ros::Time::now().toSec(), current_joint_state->position.at(1));
+    ui->textEdit_page4_status_log->append(text_log);
+    text_log.sprintf("[INFO] [%lf] elbow        = [%lf] ",ros::Time::now().toSec(), current_joint_state->position.at(2));
+    ui->textEdit_page4_status_log->append(text_log);
+    text_log.sprintf("[INFO] [%lf] wrist_angle  = [%lf] ",ros::Time::now().toSec(), current_joint_state->position.at(3));
+    ui->textEdit_page4_status_log->append(text_log);
+    text_log.sprintf("[INFO] [%lf] wrist_rotate = [%lf] ",ros::Time::now().toSec(), current_joint_state->position.at(4));
+    ui->textEdit_page4_status_log->append(text_log);
+    text_log.sprintf("[INFO] [%lf] gripper      = [%lf] ",ros::Time::now().toSec(), current_joint_state->position.at(5));
+    ui->textEdit_page4_status_log->append(text_log);
+
+    text_log.sprintf("%lf",current_joint_state->position.at(0));
+    ui->lineEdit_page4_waist_val->setText(text_log);
+    text_log.sprintf("%lf",current_joint_state->position.at(1));
+    ui->lineEdit_page4_shoulder_val->setText(text_log);
+    text_log.sprintf("%lf",current_joint_state->position.at(2));
+    ui->lineEdit_page4_elbow_val->setText(text_log);
+    text_log.sprintf("%lf",current_joint_state->position.at(3));
+    ui->lineEdit_page4_wrist_angle->setText(text_log);
+    text_log.sprintf("%lf",current_joint_state->position.at(4));
+    ui->lineEdit_page4_wrist_rotate->setText(text_log);
+    text_log.sprintf("%lf",current_joint_state->position.at(5));
+    ui->lineEdit_page4_left_finger->setText(text_log);
+
+}
+
+void HProbotArmControl::on_pushButton_page4_midhome_clicked()
+{
+    QString text_log;
+
+    joint_group_cmd.name = "all";
+    joint_group_cmd.cmd = mid_position;
+    pub_joint_group_cmd.publish(joint_group_cmd);
+
+    sensor_msgs::JointStateConstPtr current_joint_state;
+    current_joint_state = ros::topic::waitForMessage<sensor_msgs::JointState>("/vx300/joint_states");
+
+    text_log.sprintf("[INFO] [%lf] waist        = [%lf] ",ros::Time::now().toSec(), current_joint_state->position.at(0));
+    ui->textEdit_page4_status_log->append(text_log);
+    text_log.sprintf("[INFO] [%lf] shoulder     = [%lf] ",ros::Time::now().toSec(), current_joint_state->position.at(1));
+    ui->textEdit_page4_status_log->append(text_log);
+    text_log.sprintf("[INFO] [%lf] elbow        = [%lf] ",ros::Time::now().toSec(), current_joint_state->position.at(2));
+    ui->textEdit_page4_status_log->append(text_log);
+    text_log.sprintf("[INFO] [%lf] wrist_angle  = [%lf] ",ros::Time::now().toSec(), current_joint_state->position.at(3));
+    ui->textEdit_page4_status_log->append(text_log);
+    text_log.sprintf("[INFO] [%lf] wrist_rotate = [%lf] ",ros::Time::now().toSec(), current_joint_state->position.at(4));
+    ui->textEdit_page4_status_log->append(text_log);
+    text_log.sprintf("[INFO] [%lf] gripper      = [%lf] ",ros::Time::now().toSec(), current_joint_state->position.at(5));
+    ui->textEdit_page4_status_log->append(text_log);
+
+    text_log.sprintf("%lf",current_joint_state->position.at(0));
+    ui->lineEdit_page4_waist_val->setText(text_log);
+    text_log.sprintf("%lf",current_joint_state->position.at(1));
+    ui->lineEdit_page4_shoulder_val->setText(text_log);
+    text_log.sprintf("%lf",current_joint_state->position.at(2));
+    ui->lineEdit_page4_elbow_val->setText(text_log);
+    text_log.sprintf("%lf",current_joint_state->position.at(3));
+    ui->lineEdit_page4_wrist_angle->setText(text_log);
+    text_log.sprintf("%lf",current_joint_state->position.at(4));
+    ui->lineEdit_page4_wrist_rotate->setText(text_log);
+    text_log.sprintf("%lf",current_joint_state->position.at(5));
+    ui->lineEdit_page4_left_finger->setText(text_log);
+
+}
+
+
+void HProbotArmControl::on_pushButton_page4_status_home_clicked()
+{
+    ui->stackedWidget->setCurrentIndex(0);
+}
+
+void HProbotArmControl::on_pushButton_page4_current_stat_clicked()
+{
+    QString text_log;
+    text_log.sprintf("[INFO] [%lf] Topic Subscribe 'current status' ",ros::Time::now().toSec());
+    ui->textEdit_page4_status_log->setText(text_log);
+
+    sensor_msgs::JointStateConstPtr current_joint_state;
+    current_joint_state = ros::topic::waitForMessage<sensor_msgs::JointState>("/vx300/joint_states");
+
+    text_log.sprintf("[INFO] [%lf] waist        = [%lf] ",ros::Time::now().toSec(), current_joint_state->position.at(0));
+    ui->textEdit_page4_status_log->append(text_log);
+    text_log.sprintf("[INFO] [%lf] shoulder     = [%lf] ",ros::Time::now().toSec(), current_joint_state->position.at(1));
+    ui->textEdit_page4_status_log->append(text_log);
+    text_log.sprintf("[INFO] [%lf] elbow        = [%lf] ",ros::Time::now().toSec(), current_joint_state->position.at(2));
+    ui->textEdit_page4_status_log->append(text_log);
+    text_log.sprintf("[INFO] [%lf] wrist_angle  = [%lf] ",ros::Time::now().toSec(), current_joint_state->position.at(3));
+    ui->textEdit_page4_status_log->append(text_log);
+    text_log.sprintf("[INFO] [%lf] wrist_rotate = [%lf] ",ros::Time::now().toSec(), current_joint_state->position.at(4));
+    ui->textEdit_page4_status_log->append(text_log);
+    text_log.sprintf("[INFO] [%lf] gripper      = [%lf] ",ros::Time::now().toSec(), current_joint_state->position.at(5));
+    ui->textEdit_page4_status_log->append(text_log);
+
+    text_log.sprintf("%lf",current_joint_state->position.at(0));
+    ui->lineEdit_page4_waist_val->setText(text_log);
+    text_log.sprintf("%lf",current_joint_state->position.at(1));
+    ui->lineEdit_page4_shoulder_val->setText(text_log);
+    text_log.sprintf("%lf",current_joint_state->position.at(2));
+    ui->lineEdit_page4_elbow_val->setText(text_log);
+    text_log.sprintf("%lf",current_joint_state->position.at(3));
+    ui->lineEdit_page4_wrist_angle->setText(text_log);
+    text_log.sprintf("%lf",current_joint_state->position.at(4));
+    ui->lineEdit_page4_wrist_rotate->setText(text_log);
+    text_log.sprintf("%lf",current_joint_state->position.at(5));
+    ui->lineEdit_page4_left_finger->setText(text_log);
+
+}
+
+void HProbotArmControl::on_pushButton_page4_moving_clicked()
+{
+    robot_info_call.request.cmd_type = "group";
+    robot_info_call.request.name = "all";
+    srv_robot_info = n->serviceClient<interbotix_xs_msgs::RobotInfo>("/vx300/get_robot_info");
+    if(srv_robot_info.call(robot_info_call)){
+        goal_position.resize(robot_info_call.response.num_joints);
+        std::fill(goal_position.begin(), goal_position.end(), 0.0f);
+      }
+
+    goal_position.at(0) = ui->lineEdit_page4_waist_val->text().toDouble();
+    goal_position.at(1) = ui->lineEdit_page4_shoulder_val->text().toDouble();
+    goal_position.at(2) = ui->lineEdit_page4_elbow_val->text().toDouble();
+    goal_position.at(3) = ui->lineEdit_page4_wrist_angle->text().toDouble();
+    goal_position.at(4) = ui->lineEdit_page4_wrist_rotate->text().toDouble();
+    goal_position.at(5) = ui->lineEdit_page4_left_finger->text().toDouble();
+
+    joint_group_cmd.name = "all";
+    joint_group_cmd.cmd = goal_position;
+    pub_joint_group_cmd.publish(joint_group_cmd);
+
+}
+
+void HProbotArmControl::on_pushButton_page4_g_open_clicked()
+{
+    sensor_msgs::JointStateConstPtr current_joint_state;
+    current_joint_state = ros::topic::waitForMessage<sensor_msgs::JointState>("/vx300/joint_states");
+
+    robot_info_call.request.cmd_type = "group";
+    robot_info_call.request.name = "all";
+    srv_robot_info = n->serviceClient<interbotix_xs_msgs::RobotInfo>("/vx300/get_robot_info");
+    if(srv_robot_info.call(robot_info_call)){
+        goal_position.resize(robot_info_call.response.num_joints);
+        std::fill(goal_position.begin(), goal_position.end(), 0.0f);
+      }
+
+    goal_position.at(0) = current_joint_state->position.at(0);
+    goal_position.at(1) = current_joint_state->position.at(1);
+    goal_position.at(2) = current_joint_state->position.at(2);
+    goal_position.at(3) = current_joint_state->position.at(3);
+    goal_position.at(4) = current_joint_state->position.at(4);
+    goal_position.at(5) = 1.2;
+
+    joint_group_cmd.name = "all";
+    joint_group_cmd.cmd = goal_position;
+    pub_joint_group_cmd.publish(joint_group_cmd);
+}
+
+void HProbotArmControl::on_pushButton_page4_g_close_clicked()
+{
+    sensor_msgs::JointStateConstPtr current_joint_state;
+    current_joint_state = ros::topic::waitForMessage<sensor_msgs::JointState>("/vx300/joint_states");
+
+    robot_info_call.request.cmd_type = "group";
+    robot_info_call.request.name = "all";
+    srv_robot_info = n->serviceClient<interbotix_xs_msgs::RobotInfo>("/vx300/get_robot_info");
+    if(srv_robot_info.call(robot_info_call)){
+        goal_position.resize(robot_info_call.response.num_joints);
+        std::fill(goal_position.begin(), goal_position.end(), 0.0f);
+      }
+
+    goal_position.at(0) = current_joint_state->position.at(0);
+    goal_position.at(1) = current_joint_state->position.at(1);
+    goal_position.at(2) = current_joint_state->position.at(2);
+    goal_position.at(3) = current_joint_state->position.at(3);
+    goal_position.at(4) = current_joint_state->position.at(4);
+    goal_position.at(5) = -0.55;
+
+    joint_group_cmd.name = "all";
+    joint_group_cmd.cmd = goal_position;
+    pub_joint_group_cmd.publish(joint_group_cmd);
+}
+
+void HProbotArmControl::on_pushButton_page4_start_clicked()
+{
+    ros::NodeHandle n_mqtt;
+    std_msgs::Int32ConstPtr mqtt_msg = ros::topic::waitForMessage<std_msgs::Int32>("/pong/primitive",n_mqtt);
+
+    QString text_log;
+    text_log.sprintf("[INFO] [%lf] MQTT Subscribe '%d' ",ros::Time::now().toSec(), mqtt_msg->data);
+    ui->textEdit_page4_status_log->append(text_log);
+
+    if(mqtt_msg->data == 12345){
+
+        gripper_open();
+        sleep(2);
+        gripper_close();
+
+        std_msgs::Int32 mqtt_msg_send;
+        mqtt_msg_send.data = 54321;
+        mqtt_pub.publish(mqtt_msg_send);
+    }
+}
+
+void HProbotArmControl::robot_move(float joint1, float joint2, float joint3, float joint4, float joint5, float joint6){
+
+    robot_info_call.request.cmd_type = "group";
+    robot_info_call.request.name = "all";
+    srv_robot_info = n->serviceClient<interbotix_xs_msgs::RobotInfo>("/vx300/get_robot_info");
+    if(srv_robot_info.call(robot_info_call)){
+        goal_position.resize(robot_info_call.response.num_joints);
+        std::fill(goal_position.begin(), goal_position.end(), 0.0f);
+      }
+
+    goal_position.at(0) = joint1;
+    goal_position.at(1) = joint2;
+    goal_position.at(2) = joint3;
+    goal_position.at(3) = joint4;
+    goal_position.at(4) = joint5;
+    goal_position.at(5) = joint6;
+
+    joint_group_cmd.name = "all";
+    joint_group_cmd.cmd = goal_position;
+    pub_joint_group_cmd.publish(joint_group_cmd);
+
+}
+
+void HProbotArmControl::gripper_open(){
+    sensor_msgs::JointStateConstPtr current_joint_state;
+    current_joint_state = ros::topic::waitForMessage<sensor_msgs::JointState>("/vx300/joint_states");
+
+    robot_info_call.request.cmd_type = "group";
+    robot_info_call.request.name = "all";
+    srv_robot_info = n->serviceClient<interbotix_xs_msgs::RobotInfo>("/vx300/get_robot_info");
+    if(srv_robot_info.call(robot_info_call)){
+        goal_position.resize(robot_info_call.response.num_joints);
+        std::fill(goal_position.begin(), goal_position.end(), 0.0f);
+      }
+
+    goal_position.at(0) = current_joint_state->position.at(0);
+    goal_position.at(1) = current_joint_state->position.at(1);
+    goal_position.at(2) = current_joint_state->position.at(2);
+    goal_position.at(3) = current_joint_state->position.at(3);
+    goal_position.at(4) = current_joint_state->position.at(4);
+    goal_position.at(5) = 1.2;
+
+    joint_group_cmd.name = "all";
+    joint_group_cmd.cmd = goal_position;
+    pub_joint_group_cmd.publish(joint_group_cmd);
+}
+
+void HProbotArmControl::gripper_close(){
+    sensor_msgs::JointStateConstPtr current_joint_state;
+    current_joint_state = ros::topic::waitForMessage<sensor_msgs::JointState>("/vx300/joint_states");
+
+    robot_info_call.request.cmd_type = "group";
+    robot_info_call.request.name = "all";
+    srv_robot_info = n->serviceClient<interbotix_xs_msgs::RobotInfo>("/vx300/get_robot_info");
+    if(srv_robot_info.call(robot_info_call)){
+        goal_position.resize(robot_info_call.response.num_joints);
+        std::fill(goal_position.begin(), goal_position.end(), 0.0f);
+      }
+
+    goal_position.at(0) = current_joint_state->position.at(0);
+    goal_position.at(1) = current_joint_state->position.at(1);
+    goal_position.at(2) = current_joint_state->position.at(2);
+    goal_position.at(3) = current_joint_state->position.at(3);
+    goal_position.at(4) = current_joint_state->position.at(4);
+    goal_position.at(5) = -0.55;
+
+    joint_group_cmd.name = "all";
+    joint_group_cmd.cmd = goal_position;
+    pub_joint_group_cmd.publish(joint_group_cmd);
 
 }

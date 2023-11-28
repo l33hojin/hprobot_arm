@@ -69,6 +69,11 @@
 
 #include <interbotix_xs_msgs/JointGroupCommand.h>
 #include <interbotix_xs_msgs/RobotInfo.h>
+
+#include <sensor_msgs/JointState.h>
+#include <std_msgs/String.h>
+#include <std_msgs/Int32.h>
+#include <ros/topic.h>
 namespace Ui {
 class HProbotArmControl;
 }
@@ -97,7 +102,7 @@ public:
   ros::ServiceClient srv_robot_info;
   // The home/sleep publisher
   ros::Publisher pub_joint_group_cmd;
-
+  ros::Publisher mqtt_pub;
   // The home/sleep jointgroupcommand message
   interbotix_xs_msgs::JointGroupCommand joint_group_cmd;
 
@@ -105,6 +110,10 @@ public:
   std::vector<float> home_position;
   std::vector<float> mid_position;
   std::vector<float> sleep_position;
+
+  std::vector<float> current_position;
+  std::vector<float> goal_position;
+
 
   interbotix_xs_msgs::RobotInfo robot_info_call;
 
@@ -146,6 +155,28 @@ private slots:
   void on_pushButton_page3_midhome_clicked();
 
   void on_pushButton_page2_execute_excute_clicked();
+
+  void on_pushButton_page4_sleep_clicked();
+
+  void on_pushButton_page4_midhome_clicked();
+
+  void on_pushButton_page0_main_status_clicked();
+
+  void on_pushButton_page4_status_home_clicked();
+
+  void on_pushButton_page4_current_stat_clicked();
+
+  void on_pushButton_page4_moving_clicked();
+
+  void on_pushButton_page4_g_open_clicked();
+
+  void on_pushButton_page4_g_close_clicked();
+
+  void on_pushButton_page4_start_clicked();
+  void robot_move(float joint1, float joint2, float joint3, float joint4, float joint5, float joint6);
+  void gripper_open();
+  void gripper_close();
+
 
 private:
   Ui::HProbotArmControl *ui;
