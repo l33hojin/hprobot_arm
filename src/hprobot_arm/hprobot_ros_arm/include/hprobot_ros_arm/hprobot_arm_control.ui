@@ -757,6 +757,32 @@
       <string>start</string>
      </property>
     </widget>
+    <widget class="QPushButton" name="pushButton_page4_torque_on">
+     <property name="geometry">
+      <rect>
+       <x>620</x>
+       <y>150</y>
+       <width>131</width>
+       <height>51</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>torque_ON</string>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="pushButton_page4_torque_off">
+     <property name="geometry">
+      <rect>
+       <x>620</x>
+       <y>210</y>
+       <width>131</width>
+       <height>51</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>torque_OFF</string>
+     </property>
+    </widget>
    </widget>
   </widget>
  </widget>

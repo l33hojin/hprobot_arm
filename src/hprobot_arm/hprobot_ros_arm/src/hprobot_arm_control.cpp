@@ -1086,23 +1086,28 @@ void HProbotArmControl::on_pushButton_page4_g_close_clicked()
 
 void HProbotArmControl::on_pushButton_page4_start_clicked()
 {
+    QString text_log;
+    text_log.sprintf("[INFO] [%lf] MQTT wating... ",ros::Time::now().toSec());
+    ui->textEdit_page4_status_log->append(text_log);
+
     ros::NodeHandle n_mqtt;
     std_msgs::Int32ConstPtr mqtt_msg = ros::topic::waitForMessage<std_msgs::Int32>("/pong/primitive",n_mqtt);
-
-    QString text_log;
-    text_log.sprintf("[INFO] [%lf] MQTT Subscribe '%d' ",ros::Time::now().toSec(), mqtt_msg->data);
-    ui->textEdit_page4_status_log->append(text_log);
 
     if(mqtt_msg->data == 12345){
 
         gripper_open();
         sleep(2);
         gripper_close();
+        //robot_move(1,2,3,4,5,6);
+
 
         std_msgs::Int32 mqtt_msg_send;
         mqtt_msg_send.data = 54321;
         mqtt_pub.publish(mqtt_msg_send);
     }
+
+    text_log.sprintf("[INFO] [%lf] Complete!! ",ros::Time::now().toSec());
+    ui->textEdit_page4_status_log->append(text_log);
 }
 
 void HProbotArmControl::robot_move(float joint1, float joint2, float joint3, float joint4, float joint5, float joint6){
@@ -1174,5 +1179,36 @@ void HProbotArmControl::gripper_close(){
     joint_group_cmd.name = "all";
     joint_group_cmd.cmd = goal_position;
     pub_joint_group_cmd.publish(joint_group_cmd);
+
+}
+
+void HProbotArmControl::on_pushButton_page4_torque_on_clicked()
+{
+    QString text_log;
+
+    robot_torque.request.cmd_type = "group";
+    robot_torque.request.name = "all";
+    robot_torque.request.enable = true;
+
+    srv_robot_info = n->serviceClient<interbotix_xs_msgs::TorqueEnable>("/vx300/torque_enable");
+    if(srv_robot_info.call(robot_torque)){
+        text_log.sprintf("[INFO] [%lf] Torque ON!!! ",ros::Time::now().toSec());
+        ui->textEdit_page4_status_log->append(text_log);
+      }
+}
+
+void HProbotArmControl::on_pushButton_page4_torque_off_clicked()
+{
+    QString text_log;
+
+    robot_torque.request.cmd_type = "group";
+    robot_torque.request.name = "all";
+    robot_torque.request.enable = false;
+
+    srv_robot_info = n->serviceClient<interbotix_xs_msgs::TorqueEnable>("/vx300/torque_enable");
+    if(srv_robot_info.call(robot_torque)){
+        text_log.sprintf("[INFO] [%lf] Torque OFF!!! ",ros::Time::now().toSec());
+        ui->textEdit_page4_status_log->append(text_log);
+      }
 
 }

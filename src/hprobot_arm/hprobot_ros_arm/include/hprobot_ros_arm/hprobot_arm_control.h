@@ -116,7 +116,7 @@ public:
 
 
   interbotix_xs_msgs::RobotInfo robot_info_call;
-
+  interbotix_xs_msgs::TorqueEnable robot_torque;
 
   interbotix_xs_msgs::OperatingModes opmodes_call;
   ros::ServiceClient srv_operating_modes;
@@ -177,6 +177,10 @@ private slots:
   void gripper_open();
   void gripper_close();
 
+
+  void on_pushButton_page4_torque_on_clicked();
+
+  void on_pushButton_page4_torque_off_clicked();
 
 private:
   Ui::HProbotArmControl *ui;
