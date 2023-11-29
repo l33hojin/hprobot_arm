@@ -1090,9 +1090,8 @@ void HProbotArmControl::on_pushButton_page4_start_clicked()
     text_log.sprintf("[INFO] [%lf] MQTT wating... ",ros::Time::now().toSec());
     ui->textEdit_page4_status_log->append(text_log);
 
-    ros::NodeHandle n_mqtt;
+    /*ros::NodeHandle n_mqtt;
     std_msgs::Int32ConstPtr mqtt_msg = ros::topic::waitForMessage<std_msgs::Int32>("/pong/primitive",n_mqtt);
-
     if(mqtt_msg->data == 12345){
 
         gripper_open();
@@ -1104,7 +1103,27 @@ void HProbotArmControl::on_pushButton_page4_start_clicked()
         std_msgs::Int32 mqtt_msg_send;
         mqtt_msg_send.data = 54321;
         mqtt_pub.publish(mqtt_msg_send);
-    }
+    }*/
+
+    //  example!!!!!!!!!!
+    robot_move_sleep();
+    sleep(1);
+    robot_move_mid();
+    sleep(2);
+    robot_move(-1.033903,0.030680,-0.027612,1.647495,-0.082835,0.023010);
+    sleep(2);
+    robot_move(-0.739379,-0.638136,1.603010,-0.891243,-0.088971,0.023010);
+    sleep(2);
+    robot_move(-0.705631,1.153554,-0.438719,-0.900447,0.079767,0.023010);
+    sleep(2);
+    gripper_open();
+    sleep(2);
+    gripper_close();
+    sleep(2);
+    robot_move_mid();
+    sleep(2);
+    robot_move_sleep();
+    //   example!!!!!!!!
 
     text_log.sprintf("[INFO] [%lf] Complete!! ",ros::Time::now().toSec());
     ui->textEdit_page4_status_log->append(text_log);
@@ -1211,4 +1230,16 @@ void HProbotArmControl::on_pushButton_page4_torque_off_clicked()
         ui->textEdit_page4_status_log->append(text_log);
       }
 
+}
+
+void HProbotArmControl::robot_move_sleep(){
+    joint_group_cmd.name = "all";
+    joint_group_cmd.cmd = sleep_position;
+    pub_joint_group_cmd.publish(joint_group_cmd);
+}
+
+void HProbotArmControl::robot_move_mid(){
+    joint_group_cmd.name = "all";
+    joint_group_cmd.cmd = mid_position;
+    pub_joint_group_cmd.publish(joint_group_cmd);
 }

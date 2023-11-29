@@ -181,6 +181,8 @@ private slots:
   void on_pushButton_page4_torque_on_clicked();
 
   void on_pushButton_page4_torque_off_clicked();
+  void robot_move_sleep();
+  void robot_move_mid();
 
 private:
   Ui::HProbotArmControl *ui;
