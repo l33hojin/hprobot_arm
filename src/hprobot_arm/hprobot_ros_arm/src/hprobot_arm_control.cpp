@@ -1086,47 +1086,87 @@ void HProbotArmControl::on_pushButton_page4_g_close_clicked()
 
 void HProbotArmControl::on_pushButton_page4_start_clicked()
 {
+    bool flag=1;
+    while(flag==1){
     QString text_log;
     text_log.sprintf("[INFO] [%lf] MQTT wating... ",ros::Time::now().toSec());
     ui->textEdit_page4_status_log->append(text_log);
 
-    /*ros::NodeHandle n_mqtt;
+    ros::NodeHandle n_mqtt;
     std_msgs::Int32ConstPtr mqtt_msg = ros::topic::waitForMessage<std_msgs::Int32>("/pong/primitive",n_mqtt);
-    if(mqtt_msg->data == 12345){
-
-        gripper_open();
-        sleep(2);
-        gripper_close();
+    if(mqtt_msg->data == 1){
+        //gripper_open();
+        //sleep(2);
+        //gripper_close();
         //robot_move(1,2,3,4,5,6);
-
-
+    robot_move(0.0,-1.3,1.2,0.2,0,-0.6); //init_position
+    sleep(2);
+    robot_move_mid();
+    sleep(2);
+    robot_move(-1,0,0,1.5,0,1);
+    sleep(2);
+    robot_move(-8,-0.5,1.5,-1,-0,1);
+    sleep(2);
+    robot_move(-0.7,1.1,-0.4,-1,0,1);
+    sleep(2);
+    gripper_close(); //grap_target
+    sleep(2);
+    robot_move(-0.7,0.5,-0.4,0,0,-0.6);//pick_up_target
+    sleep(2);
+    robot_move(0,0,0,1.5,0,-0.6);//mid_position
+    sleep(2);
+    robot_move(0.0,-1.3,1.2,0.2,0,-0.6); //init_position
+    sleep(2);
         std_msgs::Int32 mqtt_msg_send;
-        mqtt_msg_send.data = 54321;
+        mqtt_msg_send.data = 1111;
         mqtt_pub.publish(mqtt_msg_send);
-    }*/
+    }
+    if(mqtt_msg->data == 2){
+        robot_move_sleep();
+        sleep(2);
+        std_msgs::Int32 mqtt_msg_send;
+        mqtt_msg_send.data = 2222;
+        mqtt_pub.publish(mqtt_msg_send);
+    }
+    if(mqtt_msg->data == 3){
+   flag=0;
+        std_msgs::Int32 mqtt_msg_send;
+        mqtt_msg_send.data = 3333;
+        mqtt_pub.publish(mqtt_msg_send);
+    }
 
+    /*
     //  example!!!!!!!!!!
-    robot_move_sleep();
-    sleep(1);
-    robot_move_mid();
-    sleep(2);
-    robot_move(-1.033903,0.030680,-0.027612,1.647495,-0.082835,0.023010);
-    sleep(2);
-    robot_move(-0.739379,-0.638136,1.603010,-0.891243,-0.088971,0.023010);
-    sleep(2);
-    robot_move(-0.705631,1.153554,-0.438719,-0.900447,0.079767,0.023010);
-    sleep(2);
-    gripper_open();
-    sleep(2);
-    gripper_close();
+    robot_move(0.0,-1.3,1.2,0.2,0,-0.6); //init_position
     sleep(2);
     robot_move_mid();
     sleep(2);
-    robot_move_sleep();
+    robot_move(-1,0,0,1.5,0,1);
+    sleep(2);
+    robot_move(-8,-0.5,1.5,-1,-0,1);
+    sleep(2);
+    robot_move(-0.7,1.1,-0.4,-1,0,1);
+    sleep(2);
+    gripper_close(); //grap_target
+    sleep(2);
+    robot_move(-0.7,0.5,-0.4,0,0,-0.6);//pick_up_target
+    sleep(2);
+    robot_move(0,0,0,1.5,0,-0.6);//mid_position
+    sleep(2);
+    robot_move(0.0,-1.3,1.2,0.2,0,-0.6); //init_position
+    sleep(2);
+    */
+    //robot_move_sleep();
+    //sleep(2);
+    //gripper_open();
+    //sleep(2);
+    //robot_move_mid();
+    //sleep(2);
     //   example!!!!!!!!
 
     text_log.sprintf("[INFO] [%lf] Complete!! ",ros::Time::now().toSec());
     ui->textEdit_page4_status_log->append(text_log);
+    }
 }
 
 void HProbotArmControl::robot_move(float joint1, float joint2, float joint3, float joint4, float joint5, float joint6){
